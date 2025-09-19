@@ -1,5 +1,5 @@
-import SortVisualizer from '@/components/features/sort-visualizer/selection-sort-visualizer';
+import TabbedVisualizer from '@/components/features/sort-visualizer/tabbed-visualizer';
 
 export default function Home() {
-  return <SortVisualizer />;
+  return <TabbedVisualizer />;
 }

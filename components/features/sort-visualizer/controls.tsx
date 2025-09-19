@@ -36,7 +36,7 @@ const Controls: React.FC<ControlsProps> = ({
         <div className="flex flex-wrap justify-center gap-4">
           <ControlButton
             onClick={onStart}
-            disabled={isCompleted}
+            disabled={false}
             variant={isRunning ? 'destructive' : 'default'}
             size="lg"
             className="gap-2"
@@ -49,7 +49,7 @@ const Controls: React.FC<ControlsProps> = ({
             ) : (
               <>
                 <Play size={20} />
-                {isCompleted ? 'Terminé' : 'Démarrer'}
+                {isCompleted ? 'Redémarrer' : 'Démarrer'}
               </>
             )}
           </ControlButton>
@@ -72,7 +72,7 @@ const Controls: React.FC<ControlsProps> = ({
             className="gap-2"
           >
             <Shuffle size={20} />
-            Nouveau
+            Aléatoire
           </ControlButton>
         </div>
 

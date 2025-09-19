@@ -15,7 +15,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
   onAlgorithmChange,
   disabled = false
 }) => {
-  const algorithms: SortAlgorithm[] = ['selection', 'insertion', 'merge'];
+  const algorithms: SortAlgorithm[] = ['selection', 'insertion', 'merge', 'bubble', 'quick'];
 
   return (
     <Card>

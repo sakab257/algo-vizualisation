@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 export function useSortState(initialSize: number = 10) {
   const [array, setArray] = useState<number[]>([]);
@@ -21,9 +21,23 @@ export function useSortState(initialSize: number = 10) {
   const [mergingIndex, setMergingIndex] = useState(-1);
   const [mergeRange, setMergeRange] = useState<{ start: number; end: number } | null>(null);
 
+  // Statistiques
+  const [comparisons, setComparisons] = useState(0);
+  const [swaps, setSwaps] = useState(0);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null);
+
   const isRunningRef = useRef(false);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currentAlgorithmRef = useRef<string | null>(null);
 
   const resetAnimation = useCallback(() => {
+    // Annuler toutes les animations en cours
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
     setCurrentI(-1);
     setCurrentJ(-1);
     setMinIndex(-1);
@@ -39,27 +53,61 @@ export function useSortState(initialSize: number = 10) {
     setRightSubarray(new Set());
     setMergingIndex(-1);
     setMergeRange(null);
+
+    // Reset des statistiques
+    setComparisons(0);
+    setSwaps(0);
+    setStartTime(null);
+    setEndTime(null);
   }, []);
 
   const startSorting = useCallback(() => {
     setIsRunning(true);
     isRunningRef.current = true;
     setIsCompleted(false);
+    setStartTime(Date.now());
+    setComparisons(0);
+    setSwaps(0);
   }, []);
 
   const stopSorting = useCallback(() => {
+    // Annuler toutes les animations en cours
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
     setIsRunning(false);
     isRunningRef.current = false;
+    setEndTime(Date.now());
   }, []);
 
   const completeSorting = useCallback(() => {
     setIsRunning(false);
     isRunningRef.current = false;
     setIsCompleted(true);
+    setEndTime(Date.now());
   }, []);
 
   const checkIsRunning = useCallback(() => {
     return isRunningRef.current;
+  }, []);
+
+  // Ajouter une fonction pour gérer les changements d'algorithme
+  const handleAlgorithmChange = useCallback(() => {
+    if (isRunningRef.current) {
+      stopSorting();
+    }
+    resetAnimation();
+  }, [stopSorting, resetAnimation]);
+
+  // Cleanup effect pour nettoyer les timeouts
+  useEffect(() => {
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
   }, []);
 
   return {
@@ -79,6 +127,14 @@ export function useSortState(initialSize: number = 10) {
     rightSubarray,
     mergingIndex,
     mergeRange,
+    comparisons,
+    swaps,
+    startTime,
+    endTime,
+
+    // Refs
+    animationTimeoutRef,
+    currentAlgorithmRef,
 
     // Setters
     setArray,
@@ -94,12 +150,15 @@ export function useSortState(initialSize: number = 10) {
     setRightSubarray,
     setMergingIndex,
     setMergeRange,
+    setComparisons,
+    setSwaps,
 
     // Actions
     resetAnimation,
     startSorting,
     stopSorting,
     completeSorting,
-    checkIsRunning
+    checkIsRunning,
+    handleAlgorithmChange
   };
 }

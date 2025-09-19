@@ -33,6 +33,18 @@ const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm }) => {
           'Trie récursivement chaque moitié',
           'Fusionne les deux moitiés triées'
         ];
+      case 'bubble':
+        return [
+          'Compare les éléments adjacents',
+          'Échange-les s\'ils sont dans le mauvais ordre',
+          'Répète jusqu\'au tri complet'
+        ];
+      case 'quick':
+        return [
+          'Choisit un pivot dans le tableau',
+          'Partitionne le tableau autour du pivot',
+          'Trie récursivement les deux partitions'
+        ];
       default:
         return [];
     }
@@ -109,14 +121,74 @@ const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm }) => {
               <Separator />
 
               <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
                   <span className="text-foreground/90 font-medium">Stabilité</span>
                   <Badge variant={data.stable ? "default" : "outline"}>
                     {data.stable ? 'Stable' : 'Non stable'}
                   </Badge>
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  {data.stable
+                    ? 'Préserve l\'ordre des éléments égaux'
+                    : 'Peut changer l\'ordre des éléments égaux'
+                  }
+                </p>
+              </div>
+
+              <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-foreground/90 font-medium">Type</span>
+                  <Badge variant="secondary">
+                    {algorithm === 'merge' || algorithm === 'quick' ? 'Diviser pour régner' : 'Comparaison'}
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {algorithm === 'merge' || algorithm === 'quick'
+                    ? 'Utilise la récursion pour diviser le problème'
+                    : 'Compare directement les éléments'
+                  }
+                </p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Cas d'usage pratiques */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-border/50">
+          <h4 className="text-lg font-semibold text-primary mb-3">
+            💡 Quand utiliser {data.name} ?
+          </h4>
+          <div className="text-sm text-foreground/90 space-y-2">
+            {algorithm === 'selection' && (
+              <div>
+                <p>✅ <strong>Bon pour :</strong> Petits tableaux, tri en place requis</p>
+                <p>❌ <strong>Éviter pour :</strong> Gros tableaux, performance critique</p>
+              </div>
+            )}
+            {algorithm === 'insertion' && (
+              <div>
+                <p>✅ <strong>Bon pour :</strong> Petits tableaux, données presque triées</p>
+                <p>❌ <strong>Éviter pour :</strong> Gros tableaux désordonnés</p>
+              </div>
+            )}
+            {algorithm === 'merge' && (
+              <div>
+                <p>✅ <strong>Bon pour :</strong> Gros tableaux, stabilité requise</p>
+                <p>❌ <strong>Éviter pour :</strong> Mémoire limitée, tri en place requis</p>
+              </div>
+            )}
+            {algorithm === 'bubble' && (
+              <div>
+                <p>✅ <strong>Bon pour :</strong> Apprentissage, très petits tableaux</p>
+                <p>❌ <strong>Éviter pour :</strong> Production, tableaux &gt; 10 éléments</p>
+              </div>
+            )}
+            {algorithm === 'quick' && (
+              <div>
+                <p>✅ <strong>Bon pour :</strong> Performance générale, tri en place</p>
+                <p>❌ <strong>Éviter pour :</strong> Garantie O(n log n), stabilité requise</p>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

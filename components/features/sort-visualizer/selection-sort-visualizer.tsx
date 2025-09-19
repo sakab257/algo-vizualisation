@@ -9,16 +9,30 @@ import { useMergeSortStyling } from '@/lib/hooks/use-merge-sort-styling';
 import { selectionSort } from '@/lib/algorithms/selection-sort';
 import { insertionSort } from '@/lib/algorithms/insertion-sort';
 import { mergeSort } from '@/lib/algorithms/merge-sort';
+import { bubbleSort } from '@/lib/algorithms/bubble-sort';
+import { quickSort } from '@/lib/algorithms/quick-sort';
 import { SortAlgorithm } from '@/lib/types';
 import Controls from './controls';
-import AlgorithmLegends from './algorithm-legends';
 import Visualization from './visualization';
 import AlgorithmInfo from './algorithm-info';
 import AlgorithmSelector from '@/components/ui/algorithm-selector';
+import ThemeToggle from '@/components/ui/theme-toggle';
+import Statistics from './statistics';
+import PseudocodeDisplay from './pseudocode-display';
+import { algorithmData } from '@/lib/algorithms/algorithm-data';
 
 const SortVisualizer: React.FC = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<SortAlgorithm>('selection');
   const sortState = useSortState(10);
+
+  // Gérer le changement d'algorithme
+  const onAlgorithmChange = (newAlgorithm: SortAlgorithm) => {
+    setSelectedAlgorithm(newAlgorithm);
+    // Déclencher le reset et l'arrêt si nécessaire
+    if (sortState.isRunning) {
+      sortState.handleAlgorithmChange();
+    }
+  };
   const {
     array,
     isRunning,
@@ -35,6 +49,12 @@ const SortVisualizer: React.FC = () => {
     rightSubarray,
     mergingIndex,
     mergeRange,
+    comparisons,
+    swaps,
+    startTime,
+    endTime,
+    animationTimeoutRef,
+    currentAlgorithmRef,
     setArray,
     setCurrentI,
     setCurrentJ,
@@ -48,11 +68,14 @@ const SortVisualizer: React.FC = () => {
     setRightSubarray,
     setMergingIndex,
     setMergeRange,
+    setComparisons,
+    setSwaps,
     resetAnimation,
     startSorting,
     stopSorting,
     completeSorting,
-    checkIsRunning
+    checkIsRunning,
+    handleAlgorithmChange
   } = sortState;
 
   const { generateArray } = useArrayGeneration({
@@ -107,6 +130,11 @@ const SortVisualizer: React.FC = () => {
       return;
     }
 
+    // Si l'algorithme est terminé, reset avant de redémarrer
+    if (isCompleted) {
+      resetAnimation();
+    }
+
     startSorting();
 
     try {
@@ -124,7 +152,10 @@ const SortVisualizer: React.FC = () => {
         setLeftSubarray,
         setRightSubarray,
         setMergingIndex,
-        setMergeRange
+        setMergeRange,
+        // Callbacks pour statistiques
+        setComparisons,
+        setSwaps
       };
 
       switch (selectedAlgorithm) {
@@ -136,6 +167,12 @@ const SortVisualizer: React.FC = () => {
           break;
         case 'merge':
           await mergeSort(array, speed, callbacks);
+          break;
+        case 'bubble':
+          await bubbleSort(array, speed, callbacks);
+          break;
+        case 'quick':
+          await quickSort(array, speed, callbacks);
           break;
         default:
           throw new Error(`Algorithme non supporté: ${selectedAlgorithm}`);
@@ -171,21 +208,11 @@ const SortVisualizer: React.FC = () => {
   ]);
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header simple */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Visualisateur d&apos;Algorithmes de Tri
-          </h1>
-          <p className="text-muted-foreground text-lg mt-2">
-            Visualisation interactive des algorithmes de tri
-          </p>
-        </div>
+    <div className="space-y-8">
 
         <AlgorithmSelector
           selectedAlgorithm={selectedAlgorithm}
-          onAlgorithmChange={setSelectedAlgorithm}
+          onAlgorithmChange={onAlgorithmChange}
           disabled={isRunning}
         />
 
@@ -209,12 +236,28 @@ const SortVisualizer: React.FC = () => {
           isRunning={isRunning}
           currentI={currentI}
           minIndex={minIndex}
+          algorithm={selectedAlgorithm}
         />
 
-        <AlgorithmLegends algorithm={selectedAlgorithm} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <Statistics
+              comparisons={comparisons}
+              swaps={swaps}
+              startTime={startTime}
+              endTime={endTime}
+              isRunning={isRunning}
+              algorithm={algorithmData[selectedAlgorithm].name}
+            />
 
-        <AlgorithmInfo algorithm={selectedAlgorithm} />
-      </div>
+            <AlgorithmInfo algorithm={selectedAlgorithm} />
+          </div>
+
+          <PseudocodeDisplay
+            algorithm={selectedAlgorithm}
+            isRunning={isRunning}
+          />
+        </div>
     </div>
   );
 };

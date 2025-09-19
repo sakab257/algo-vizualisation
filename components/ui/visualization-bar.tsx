@@ -20,6 +20,7 @@ const VisualizationBar: React.FC<BarProps> = ({
                 height: `${(value / maxHeight) * 280}px`,
                 width: `${barWidth}px`,
                 background: getBarColor(index),
+                minWidth: '30px',
                 maxWidth: '30px'
               }}
             />

@@ -17,6 +17,10 @@ export interface SortCallbacks {
   setRightSubarray?: (updater: (prev: Set<number>) => Set<number>) => void;
   setMergingIndex?: (index: number) => void;
   setMergeRange?: (range: { start: number; end: number } | null) => void;
+
+  // Callbacks pour statistiques
+  setComparisons?: (updater: (prev: number) => number) => void;
+  setSwaps?: (updater: (prev: number) => number) => void;
 }
 
 export async function selectionSort(
@@ -30,7 +34,9 @@ export async function selectionSort(
     setMinIndex,
     setSortedIndices,
     setArray,
-    checkIsRunning
+    checkIsRunning,
+    setComparisons,
+    setSwaps
   } = callbacks;
 
   const arr = [...initialArray];
@@ -57,6 +63,9 @@ export async function selectionSort(
         setMinIndex(minIdx);
         await sleep(speed / 2);
       }
+
+      // Incrémenter les comparaisons
+      setComparisons?.(prev => prev + 1);
     }
 
     // Échanger si nécessaire
@@ -64,6 +73,7 @@ export async function selectionSort(
       // Effectuer l'échange
       [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
       setArray([...arr]);
+      setSwaps?.(prev => prev + 1);
       await sleep(speed);
     }
 

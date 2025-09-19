@@ -14,6 +14,11 @@ export interface SortState {
   rightSubarray: Set<number>;
   mergingIndex: number;
   mergeRange: { start: number; end: number } | null;
+  // Statistiques
+  comparisons: number;
+  swaps: number;
+  startTime: number | null;
+  endTime: number | null;
 }
 
 export interface SortConfig {
@@ -58,7 +63,7 @@ export interface LegendItemProps {
   label: string;
 }
 
-export type SortAlgorithm = 'selection' | 'insertion' | 'merge';
+export type SortAlgorithm = 'selection' | 'insertion' | 'merge' | 'bubble' | 'quick';
 
 export interface AlgorithmInfo {
   name: string;
@@ -66,4 +71,12 @@ export interface AlgorithmInfo {
   spaceComplexity: string;
   stable: boolean;
   description: string;
+}
+
+export interface SortStatistics {
+  comparisons: number;
+  swaps: number;
+  duration: number | null;
+  algorithm: string;
+  arraySize: number;
 }
