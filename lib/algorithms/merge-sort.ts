@@ -154,7 +154,7 @@ export async function mergeSort(
 
   // Marquer tous les éléments comme triés à la fin
   if (checkIsRunning()) {
-    setSortedIndices(new Set(Array.from({ length: n }, (_, i) => i)));
+    setSortedIndices(() => new Set(Array.from({ length: n }, (_, i) => i)));
     setCurrentI(-1);
     setCurrentJ(-1);
     setMinIndex(-1);
