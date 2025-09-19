@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Eye, GitCompare } from 'lucide-react';
 import SortVisualizer from './selection-sort-visualizer';
@@ -8,8 +8,8 @@ import ComparisonMode from './comparison-mode';
 
 const TabbedVisualizer: React.FC = () => {
   const [activeTab, setActiveTab] = useState('single');
-  const [speed, setSpeed] = useState(500);
-  const [arraySize, setArraySize] = useState(10);
+  const [speed] = useState(500);
+  const [arraySize] = useState(10);
 
   return (
     <div className="min-h-screen p-3 sm:p-4 lg:p-8">

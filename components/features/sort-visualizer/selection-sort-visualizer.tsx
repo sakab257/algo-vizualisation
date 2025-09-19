@@ -16,7 +16,6 @@ import Controls from './controls';
 import Visualization from './visualization';
 import AlgorithmInfo from './algorithm-info';
 import AlgorithmSelector from '@/components/ui/algorithm-selector';
-import ThemeToggle from '@/components/ui/theme-toggle';
 import Statistics from './statistics';
 import PseudocodeDisplay from './pseudocode-display';
 import { algorithmData } from '@/lib/algorithms/algorithm-data';
@@ -53,8 +52,6 @@ const SortVisualizer: React.FC = () => {
     swaps,
     startTime,
     endTime,
-    animationTimeoutRef,
-    currentAlgorithmRef,
     setArray,
     setCurrentI,
     setCurrentJ,
@@ -75,7 +72,6 @@ const SortVisualizer: React.FC = () => {
     stopSorting,
     completeSorting,
     checkIsRunning,
-    handleAlgorithmChange
   } = sortState;
 
   const { generateArray } = useArrayGeneration({
@@ -194,6 +190,10 @@ const SortVisualizer: React.FC = () => {
     startSorting,
     stopSorting,
     completeSorting,
+    isCompleted,
+    resetAnimation,
+    setComparisons,
+    setSwaps,
     setKeyIndex,
     setLeftSubarray,
     setMergeRange,

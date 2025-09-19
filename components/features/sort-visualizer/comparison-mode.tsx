@@ -16,7 +16,7 @@ import { quickSort } from '@/lib/algorithms/quick-sort';
 import AlgorithmDropdown from '@/components/ui/algorithm-dropdown';
 import Visualization from './visualization';
 import Statistics from './statistics';
-import { Play, Pause, RotateCcw, Shuffle, Settings, Trophy, Zap } from 'lucide-react';
+import { Pause, RotateCcw, Shuffle, Settings, Trophy, Zap } from 'lucide-react';
 import CustomSlider from '@/components/ui/custom-slider';
 import { Badge } from '@/components/ui/badge';
 
@@ -35,7 +35,7 @@ const ComparisonMode: React.FC<ComparisonModeProps> = ({ arraySize: initialArray
 
   // État pour l'algorithme 1
   const sortState1 = useSortState(localArraySize);
-  const { generateArray: generateArray1 } = useArrayGeneration({
+  useArrayGeneration({
     arraySize: localArraySize,
     setArray: sortState1.setArray,
     resetAnimation: sortState1.resetAnimation
@@ -43,7 +43,7 @@ const ComparisonMode: React.FC<ComparisonModeProps> = ({ arraySize: initialArray
 
   // État pour l'algorithme 2
   const sortState2 = useSortState(localArraySize);
-  const { generateArray: generateArray2 } = useArrayGeneration({
+  useArrayGeneration({
     arraySize: localArraySize,
     setArray: sortState2.setArray,
     resetAnimation: sortState2.resetAnimation
@@ -81,7 +81,7 @@ const ComparisonMode: React.FC<ComparisonModeProps> = ({ arraySize: initialArray
 
   const runAlgorithm = useCallback(async (
     algorithm: SortAlgorithm,
-    sortState: any
+    sortState: ReturnType<typeof useSortState>
   ) => {
     const callbacks = {
       setCurrentI: sortState.setCurrentI,

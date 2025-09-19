@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Code2, Play } from 'lucide-react';
 import { SortAlgorithm } from '@/lib/types';
-import { pseudocodeData, PseudocodeLine } from '@/lib/algorithms/pseudocode-data';
+import { pseudocodeData } from '@/lib/algorithms/pseudocode-data';
 import { algorithmData } from '@/lib/algorithms/algorithm-data';
 
 interface PseudocodeDisplayProps {
