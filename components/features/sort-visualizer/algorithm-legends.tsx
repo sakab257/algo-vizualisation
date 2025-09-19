@@ -1,0 +1,70 @@
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import LegendItem from '@/components/ui/legend-item';
+import { SortAlgorithm } from '@/lib/types';
+
+interface AlgorithmLegendsProps {
+  algorithm: SortAlgorithm;
+}
+
+const AlgorithmLegends: React.FC<AlgorithmLegendsProps> = ({ algorithm }) => {
+  const getLegendItems = () => {
+    switch (algorithm) {
+      case 'selection':
+        return [
+          { color: '#ef4444', label: 'Élément actuel (i)' },
+          { color: '#f59e0b', label: 'Minimum trouvé' },
+          { color: '#3b82f6', label: 'En comparaison (j)' },
+          { color: '#22c55e', label: 'Éléments triés' },
+          { color: '#9ca3af', label: 'Non triés' }
+        ];
+
+      case 'insertion':
+        return [
+          { color: '#8b5cf6', label: 'Élément à insérer (clé)' },
+          { color: '#fbbf24', label: 'Position d\'insertion' },
+          { color: '#60a5fa', label: 'Éléments en décalage' },
+          { color: '#10b981', label: 'Partie triée' },
+          { color: '#34d399', label: 'Partie triée (précédente)' },
+          { color: '#d1d5db', label: 'Partie non triée' }
+        ];
+
+      case 'merge':
+        return [
+          { color: '#ef4444', label: 'Sous-tableau gauche (comparaison)' },
+          { color: '#3b82f6', label: 'Sous-tableau droit (comparaison)' },
+          { color: '#fca5a5', label: 'Sous-tableau gauche' },
+          { color: '#93c5fd', label: 'Sous-tableau droit' },
+          { color: '#8b5cf6', label: 'Élément en placement' },
+          { color: '#fbbf24', label: 'Zone de fusion active' },
+          { color: '#10b981', label: 'Sections fusionnées' }
+        ];
+
+      default:
+        return [];
+    }
+  };
+
+  const legendItems = getLegendItems();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-center">Légende des Couleurs</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {legendItems.map((item, index) => (
+            <LegendItem
+              key={index}
+              color={item.color}
+              label={item.label}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default AlgorithmLegends;
