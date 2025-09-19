@@ -1,5 +1,4 @@
 import { useState, useCallback, useRef } from 'react';
-import { SortState, SortConfig } from '@/lib/types';
 
 export function useSortState(initialSize: number = 10) {
   const [array, setArray] = useState<number[]>([]);

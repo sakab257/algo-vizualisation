@@ -157,6 +157,12 @@ const SortVisualizer: React.FC = () => {
     startSorting,
     stopSorting,
     completeSorting,
+    setKeyIndex,
+    setLeftSubarray,
+    setMergeRange,
+    setMergingIndex,
+    setRightSubarray,
+    setShiftingIndices,
     setCurrentI,
     setCurrentJ,
     setMinIndex,
@@ -170,7 +176,7 @@ const SortVisualizer: React.FC = () => {
         {/* Header simple */}
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight">
-            Visualisateur d'Algorithmes de Tri
+            Visualisateur d&apos;Algorithmes de Tri
           </h1>
           <p className="text-muted-foreground text-lg mt-2">
             Visualisation interactive des algorithmes de tri

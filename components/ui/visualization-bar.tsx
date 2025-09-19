@@ -7,10 +7,7 @@ const VisualizationBar: React.FC<BarProps> = ({
   index,
   maxHeight,
   barWidth,
-  getBarColor,
-  isRunning,
-  currentI,
-  minIndex
+  getBarColor
 }) => {
   return (
     <TooltipProvider>

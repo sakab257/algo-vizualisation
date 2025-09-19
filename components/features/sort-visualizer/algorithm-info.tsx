@@ -66,7 +66,7 @@ const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm }) => {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-primary mb-3">
-              Étapes de l'algorithme
+              Étapes de l&apos;algorithme
             </h4>
             <div className="space-y-3">
               {steps.map((step, index) => (
